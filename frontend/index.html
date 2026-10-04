@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bioreactor Monitoring Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div>
+            <h1>Bioreactor Monitor</h1>
+            <p>Autonomous control system</p>
+        </div>
+        <div id="connection-status" class="connection" role="status" aria-live="polite">
+            <span id="connection-dot" class="connection-dot"></span>
+            <span id="connection-text">Checking backend…</span>
+        </div>
+    </header>
+
+    <main class="dashboard">
+
+        <section class="section-heading">
+            <div>
+                <h2>Batch Overview</h2>
+                <p>Monitoring batch <strong id="batch-display">B1</strong></p>
+            </div>
+            <div id="status-badge" class="status-badge neutral">
+                Awaiting telemetry
+            </div>
+        </section>
+
+        <section class="metrics-grid">
+
+            <article class="metric-card">
+                <span class="metric-label">Temperature</span>
+                <div class="metric-value">
+                    <span id="temperature-value">--</span>
+                    <small>°C</small>
+                </div>
+            </article>
+
+            <article class="metric-card">
+                <span class="metric-label">pH Level</span>
+                <div class="metric-value">
+                    <span id="ph-value">--</span>
+                    <small>pH</small>
+                </div>
+            </article>
+
+            <article class="metric-card">
+                <span class="metric-label">Dissolved Oxygen</span>
+                <div class="metric-value">
+                    <span id="oxygen-value">--</span>
+                    <small>%</small>
+                </div>
+            </article>
+
+            <article class="metric-card">
+                <span class="metric-label">CO₂ Level</span>
+                <div class="metric-value">
+                    <span id="co2-value">--</span>
+                    <small>%</small>
+                </div>
+            </article>
+
+            <article class="metric-card">
+                <span class="metric-label">Optical Density</span>
+                <div class="metric-value">
+                    <span id="od-value">--</span>
+                    <small>OD</small>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="content-grid">
+
+            <article class="panel">
+                <h2>Submit Telemetry</h2>
+                <p class="panel-description">
+                    Enter the latest bioreactor sensor readings.
+                </p>
+
+                <form id="telemetry-form">
+
+                    <label>
+                        Batch ID
+                        <input type="text" id="batch_id" value="B1" maxlength="64"
+                            pattern="[A-Za-z0-9][A-Za-z0-9_.-]{0,63}" required>
+                    </label>
+
+                    <label>
+                        Temperature (°C)
+                        <input type="number" id="temperature"
+                            value="30.1" min="0" max="100" step="any" required>
+                    </label>
+
+                    <label>
+                        pH
+                        <input type="number" id="ph"
+                            value="6.98" min="0" max="14" step="any" required>
+                    </label>
+
+                    <label>
+                        Dissolved Oxygen (%)
+                        <input type="number" id="dissolved_oxygen"
+                            value="90" min="0" max="100" step="any" required>
+                    </label>
+
+                    <label>
+                        CO₂ Level (%)
+                        <input type="number" id="co2_level"
+                            value="0.6" min="0" step="any" required>
+                    </label>
+
+                    <label>
+                        Optical Density
+                        <input type="number" id="optical_density"
+                            value="0.4" min="0" step="any" required>
+                    </label>
+
+                    <label>
+                        Elapsed Time (hours)
+                        <input type="number" id="elapsed_h"
+                            value="1" min="0" step="any" required>
+                    </label>
+
+                    <button type="submit" id="submit-button">
+                        Send Telemetry
+                    </button>
+
+                </form>
+
+                <p id="request-message" class="request-message"></p>
+            </article>
+
+            <article class="panel">
+                <h2>Controller Commands</h2>
+                <p class="panel-description">
+                    Latest simulated actuator commands from the controller.
+                </p>
+
+                <div id="commands-panel" class="commands-panel">
+                    <p class="empty-state">
+                        No controller commands received yet.
+                    </p>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="panel history-panel">
+            <h2>Telemetry History</h2>
+            <p class="panel-description">
+                Previously submitted sensor readings.
+            </p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Batch</th>
+                            <th>Temperature</th>
+                            <th>pH</th>
+                            <th>DO</th>
+                            <th>CO₂</th>
+                            <th>OD</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body">
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                No telemetry history available.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
